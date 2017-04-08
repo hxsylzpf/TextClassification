@@ -1,0 +1,36 @@
+Run the file trainmodel.py to generate the different feature models, it takes around 8.5 hours for it to run completely.
+Run the file trainclassificationmodel.py to generate the different classification models.
+
+Preprocessing Steps - 
+
+1. Removal of punctuations
+2. Removal of html tags and emojis
+3. Stopword removal 
+4. Stemming
+5. Tokenization (Breaking up a sentence into words)
+
+Feature Extraction - 
+
+As an alternative to basic sparse feature representations like Tf-Idf and Bag of Words, we decided to use neural embeddings instead. Neural embeddings not only reduce the dimensionality of the feature set but also provide a dense semantic representation of the document under consideration. We have used Doc2Vec to convert a given document into a vector and used this vector for downstream classification tasks.
+
+Classification - 
+
+We experimented with a couple of classifiers like Random Forests, Gradient Boost and SVM (linear kernel), among them SVM gave the best results because the text features are mostly sparse and a linear kernel does a good job at finding a optimal separating hyperplane between them (i.e. maximum margin classifier)
+
+Evaluation - 
+
+We have evaluated the mentioned classifiers on a variety of metrics like accuracy, precision, recall and f1-score.
+
+Doc2Vec/Paragraph Vector is an algorithm based on Word2vec which converts a variable length paragraph or document into a fixed length feature vector. The feature vectors so generated preserve the semantic meaning of the documents such that similar documents end up close to each other in the embedding space.
+
+The  advantages of this feature extractor over standard information retrieval based feature extractors are:
+
+1. These do not give rise to high dimensional sparse feature vectors like Bag of Words and Tf-Idf. Typical vector dimensions in this case are between 300-500. These neural embeddings are not sparse by any means but are distrubuted.
+
+2. The semantic meaning of the paragraphs and documents are preserved in this case.
+
+So we just preprocess the text and generate these document vectors using the doc2vec implementation in gensim. Once we have a trained doc2vec model on our training corpus we can use these document vectors for any classification tasks.
+
+During testing, given the raw conversation text, we preprocess it and then infer a document feature vector using the trained Doc2Vec model.
+Once we have this feature vector ready, we just pass it to a SVM classifier (i.e. which has already been trained during training phase).
+
